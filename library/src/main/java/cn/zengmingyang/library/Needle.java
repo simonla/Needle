@@ -3,13 +3,13 @@ package cn.zengmingyang.library;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.zengmingyang.library.pool.Pool;
+import cn.zengmingyang.library.pool.IPool;
 
 /**
  * Created by mingyang.zeng on 2017/8/8.
  */
 
-public  class Needle {
+public class Needle {
 
     private volatile static Needle needle;
     private List<Object> mList = new LinkedList<>();
@@ -32,8 +32,8 @@ public  class Needle {
         }
     }
 
-    public static Needle into(Pool pool) {
-        pool.inject(needle.mList.remove(0));
+    public Needle into(IPool IPool) {
+        IPool.inject(needle.mList.remove(0));
         return needle;
     }
 

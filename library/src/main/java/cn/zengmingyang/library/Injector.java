@@ -5,8 +5,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import dagger.Component;
-
 /**
  * Created by mingyang.zeng on 2017/8/4.
  */
@@ -14,13 +12,17 @@ import dagger.Component;
 public class Injector {
 
     private HashMap<Class<?>, Method> mMethodClassBind;
+    private Object mComponent;
 
-    private Component mComponent;
-
-    public Injector(Class<?> clazz, Component component) {
-        mComponent = component;
+    public Injector(Object component) {
         mMethodClassBind = new LinkedHashMap<>();
-        for (Method m : clazz.getDeclaredMethods()) {
+        mComponent = component;
+        build();
+    }
+
+    private void build() {
+        for (Method m : mComponent.getClass().getDeclaredMethods()) {
+            if (!m.getName().equals("inject")) continue;
             Class beInjected = m.getParameterTypes()[0];
             if (beInjected != null) {
                 mMethodClassBind.put(beInjected, m);
