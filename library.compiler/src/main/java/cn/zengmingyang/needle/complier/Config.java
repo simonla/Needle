@@ -11,7 +11,7 @@ public class Config {
     public static final String APP_DAGGER_REFERENCE = PACKAGE + ".Dagger" + COMPONENT_NAME;
 
     public static final String ANNO_APPLICATION_POOL = "cn.zengmingyang.needle.ApplicationPool";
-    public static final String ANNO_LOCAL_POOL = "cn.zengmingyang.nedle.LocalPool";
+    public static final String ANNO_LOCAL_POOL = "cn.zengmingyang.nedle.ActivityPool";
 
     public static final String INJECT_METHOD_NAME = "inject";
 }

@@ -14,6 +14,5 @@ public class Step2 implements ProcessorStep {
     @Override
     public void go(ProcessingEnvironment processingEnvironment, RoundEnvironment roundEnvironment) {
 
-
     }
 }

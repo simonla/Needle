@@ -10,12 +10,12 @@ import java.io.IOException;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.tools.Diagnostic;
 
+import cn.zengmingyang.needle.ApplicationPool;
 import cn.zengmingyang.needle.complier.base.ProcessorStep;
 import dagger.Component;
 
@@ -32,7 +32,6 @@ public class GenAppComponent implements ProcessorStep {
 
     @Override
     public void go(ProcessingEnvironment processingEnvironment, RoundEnvironment roundEnvironment) {
-
         AnnotationSpec.Builder componentAnnotation = AnnotationSpec
                 .builder(Component.class)
                 .addMember("modules", "$L.class", APP_MODULE);
@@ -42,8 +41,7 @@ public class GenAppComponent implements ProcessorStep {
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Singleton.class)
                 .addAnnotation(componentAnnotation.build());
-        for (Element e : roundEnvironment.getElementsAnnotatedWith(Inject.class)) {
-            if(!e.getKind().isField()) continue;
+        for (Element e : roundEnvironment.getElementsAnnotatedWith(ApplicationPool.class)) {
             String className = e.getSimpleName().toString();
             MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(INJECT_METHOD_NAME)
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
