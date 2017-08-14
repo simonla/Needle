@@ -3,10 +3,10 @@ package cn.zengmingyang.needle;
 import javax.inject.Inject;
 
 /**
- * Created by mingyang.zeng on 2017/8/10.
+ * Created by mingyang.zeng on 2017/8/14.
  */
 
-public class M {
+public class N {
 
     public int getI() {
         return i;
@@ -19,7 +19,7 @@ public class M {
     private int i = 0;
 
     @Inject
-    public M() {
+    public N() {
 
     }
 

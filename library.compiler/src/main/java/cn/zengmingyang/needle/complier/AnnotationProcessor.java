@@ -21,7 +21,7 @@ import cn.zengmingyang.needle.complier.base.ProcessorStep;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 @SupportedAnnotationTypes({Config.ANNO_APPLICATION_POOL,
-        Config.ANNO_LOCAL_POOL})
+        Config.ANNO_LOCAL_POOL,Config.ANNO_INJECT})
 @AutoService(Processor.class)
 public class AnnotationProcessor extends BaseProcessor {
 
@@ -29,9 +29,9 @@ public class AnnotationProcessor extends BaseProcessor {
     protected Iterable<? extends ProcessorStep> initSteps(ProcessingEnvironment processingEnvironment
             , RoundEnvironment roundEnvironment) {
         return Arrays.asList(
-                new GenAppModule(),
-                new GenAppComponent(),
-                new Step2()
+                new GenModule(),
+                new GenActivityComponent(),
+                new GenAppComponent()
         );
     }
 }

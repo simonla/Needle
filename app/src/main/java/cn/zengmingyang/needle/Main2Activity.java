@@ -5,11 +5,13 @@ import android.util.Log;
 
 import javax.inject.Inject;
 
-@ApplicationPool
 public class Main2Activity extends BaseActivity {
 
     @Inject
     M mM;
+
+    @Inject
+    N mN;
 
     private String TAG = this.getClass().getSimpleName();
 
@@ -17,6 +19,7 @@ public class Main2Activity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        Log.d(TAG, "onCreate: "+mM.getI());
+        Log.d(TAG, "onCreate: M == " + mM.toString());
+        Log.d(TAG, "onCreate: N == " + mN.toString());
     }
 }

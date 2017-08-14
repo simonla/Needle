@@ -5,13 +5,16 @@ package cn.zengmingyang.needle.complier;
  */
 
 public class Config {
-    public static final String PACKAGE = "cn.zengmingyang.library";
-    public static final String COMPONENT_NAME = "AppComponent";
+    public static final String PACKAGE = "cn.zengmingyang.needle";
+    public static final String APP_COMPONENT = "AppComponent";
+    public static final String ACTIVITY_COMPONENT = "Component";
     public static final String APP_MODULE = "AppModule";
-    public static final String APP_DAGGER_REFERENCE = PACKAGE + ".Dagger" + COMPONENT_NAME;
+    public static final String ACTIVITY_MODULE = "ActivityModule";
+    public static final String APP_DAGGER_REFERENCE = PACKAGE + ".Dagger" + APP_COMPONENT;
 
     public static final String ANNO_APPLICATION_POOL = "cn.zengmingyang.needle.ApplicationPool";
     public static final String ANNO_LOCAL_POOL = "cn.zengmingyang.nedle.ActivityPool";
+    public static final String ANNO_INJECT = "javax.inject.Inject";
 
     public static final String INJECT_METHOD_NAME = "inject";
 }

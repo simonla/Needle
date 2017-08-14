@@ -1,61 +1,52 @@
 package cn.zengmingyang.needle.complier;
 
 import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
-import java.io.IOException;
-
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.inject.Singleton;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
-import javax.tools.Diagnostic;
 
 import cn.zengmingyang.needle.ApplicationPool;
 import cn.zengmingyang.needle.complier.base.ProcessorStep;
 import dagger.Component;
 
+import static cn.zengmingyang.needle.complier.Config.ACTIVITY_COMPONENT;
+import static cn.zengmingyang.needle.complier.Config.APP_COMPONENT;
 import static cn.zengmingyang.needle.complier.Config.APP_MODULE;
-import static cn.zengmingyang.needle.complier.Config.COMPONENT_NAME;
-import static cn.zengmingyang.needle.complier.Config.INJECT_METHOD_NAME;
-import static cn.zengmingyang.needle.complier.Config.PACKAGE;
 
 /**
- * Created by mingyang.zeng on 2017/8/10.
+ * Created by mingyang.zeng on 2017/8/14.
  */
 
-public class GenAppComponent implements ProcessorStep {
+public class GenAppComponent extends ProcessorStep {
 
     @Override
-    public void go(ProcessingEnvironment processingEnvironment, RoundEnvironment roundEnvironment) {
-        AnnotationSpec.Builder componentAnnotation = AnnotationSpec
+    public void go(RoundEnvironment roundEnvironment) {
+        log("");
+        AnnotationSpec componentAnnotation = AnnotationSpec
                 .builder(Component.class)
-                .addMember("modules", "$L.class", APP_MODULE);
+                .addMember("modules", "$L.class", APP_MODULE)
+                .build();
 
         TypeSpec.Builder interfaceBuilder = TypeSpec
-                .interfaceBuilder(COMPONENT_NAME)
+                .interfaceBuilder(APP_COMPONENT)
                 .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Singleton.class)
-                .addAnnotation(componentAnnotation.build());
-        for (Element e : roundEnvironment.getElementsAnnotatedWith(ApplicationPool.class)) {
-            String className = e.getSimpleName().toString();
-            MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(INJECT_METHOD_NAME)
+                .addAnnotation(ApplicationPool.class)
+                .addAnnotation(componentAnnotation);
+
+        for (Element element : ActivityFinder.findElements(roundEnvironment)) {
+            ClassName returnType = ClassName.get("cn.zengmingyang.needle", element.getSimpleName()
+                    + ACTIVITY_COMPONENT);
+            MethodSpec subComponent = MethodSpec
+                    .methodBuilder(element.getSimpleName().toString().toLowerCase() + ACTIVITY_COMPONENT)
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .addParameter(TypeName.get(e.asType()), className)
-                    .returns(void.class);
-            interfaceBuilder.addMethod(methodBuilder.build());
+                    .returns(returnType)
+                    .build();
+            interfaceBuilder.addMethod(subComponent);
         }
-        TypeSpec typeSpec = interfaceBuilder.build();
-        JavaFile javaFile = JavaFile.builder(PACKAGE, typeSpec)
-                .build();
-        try {
-            javaFile.writeTo(processingEnvironment.getFiler());
-        } catch (IOException e) {
-            processingEnvironment.getMessager().printMessage(Diagnostic.Kind.NOTE, e.toString());
-        }
+        write(interfaceBuilder.build());
     }
 }

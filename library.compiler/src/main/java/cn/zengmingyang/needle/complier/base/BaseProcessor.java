@@ -25,11 +25,12 @@ public abstract class BaseProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         Iterable<? extends ProcessorStep> iterable = initSteps(mProcessingEnvironment, roundEnvironment);
         for (ProcessorStep p : iterable) {
-            p.go(mProcessingEnvironment,roundEnvironment);
+            p.init(mProcessingEnvironment);
+            p.go(roundEnvironment);
         }
         return true;
     }
 
     abstract protected Iterable<? extends ProcessorStep>
-    initSteps(ProcessingEnvironment processingEnvironment,RoundEnvironment roundEnvironment);
+    initSteps(ProcessingEnvironment processingEnvironment, RoundEnvironment roundEnvironment);
 }
