@@ -8,6 +8,9 @@ import javax.inject.Inject;
 
 public class N {
 
+    @Inject
+    I mI;
+
     public int getI() {
         return i;
     }

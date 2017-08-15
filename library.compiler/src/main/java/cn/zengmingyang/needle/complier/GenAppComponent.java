@@ -25,7 +25,6 @@ public class GenAppComponent extends ProcessorStep {
 
     @Override
     public void go(RoundEnvironment roundEnvironment) {
-        log("");
         AnnotationSpec componentAnnotation = AnnotationSpec
                 .builder(Component.class)
                 .addMember("modules", "$L.class", APP_MODULE)
@@ -36,8 +35,8 @@ public class GenAppComponent extends ProcessorStep {
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(ApplicationPool.class)
                 .addAnnotation(componentAnnotation);
-
-        for (Element element : ActivityFinder.findElements(roundEnvironment)) {
+        Finder finder = new Finder();
+        for (Element element : finder.findActivities(roundEnvironment)) {
             ClassName returnType = ClassName.get("cn.zengmingyang.needle", element.getSimpleName()
                     + ACTIVITY_COMPONENT);
             MethodSpec subComponent = MethodSpec

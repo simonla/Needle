@@ -25,8 +25,8 @@ public class GenActivityComponent extends ProcessorStep {
 
     @Override
     public void go(RoundEnvironment roundEnvironment) {
-        log("");
-        for (Element e : ActivityFinder.findElements(roundEnvironment)) {
+        Finder finder = new Finder();
+        for (Element e : finder.findActivities(roundEnvironment)) {
             String className = e.getSimpleName().toString();
             AnnotationSpec componentAnnotation = AnnotationSpec
                     .builder(Subcomponent.class)

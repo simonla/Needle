@@ -9,8 +9,8 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Name;
-import javax.tools.Diagnostic;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 import static cn.zengmingyang.needle.complier.Config.PACKAGE;
 
@@ -22,30 +22,25 @@ public abstract class ProcessorStep {
 
     protected Messager mMessager;
     protected Filer mFiler;
+    protected Types mTypeUtils;
+    protected Elements mElementUtils;
 
     void init(ProcessingEnvironment processingEnvironment) {
-        mFiler = processingEnvironment.getFiler();
-        mMessager = processingEnvironment.getMessager();
+        AptUtils aptUtils = AptUtils.get(processingEnvironment);
+        mTypeUtils = aptUtils.mTypeUtils;
+        mFiler = aptUtils.getFiler();
+        mElementUtils = aptUtils.getElementUtils();
+        mMessager = aptUtils.getMessager();
     }
 
-    public abstract void go(RoundEnvironment roundEnvironment) ;
-
-    protected void log(String s) {
-        mMessager.printMessage(Diagnostic.Kind.NOTE,
-                this.getClass().getSimpleName()+" ==> "+s);
-    }
-
-    protected void log(Name name) {
-        log(name.toString());
-    }
-
+    public abstract void go(RoundEnvironment roundEnvironment);
 
     protected void write(TypeSpec typeSpec) {
         JavaFile javaFile = JavaFile.builder(PACKAGE, typeSpec).build();
         try {
             javaFile.writeTo(mFiler);
         } catch (IOException e) {
-            log(e.getMessage());
+            AptUtils.get().log(e.getMessage());
         }
     }
 }
