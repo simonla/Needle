@@ -16,21 +16,15 @@ public class MainActivity extends BaseActivity {
     @Inject
     N mN;
 
-    // @Inject
-    // Application mApplication;
-
     private String TAG = this.getClass().getSimpleName();
-
-    TextView textView = (TextView) findViewById(R.id.tv);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        TextView textView = (TextView) findViewById(R.id.tv);
         Log.d(TAG, "onCreate: M == " + mM.toString());
         Log.d(TAG, "onCreate: N == " + mN.toString());
-
         final Intent i = new Intent(this, Main2Activity.class);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override

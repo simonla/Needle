@@ -7,7 +7,7 @@ package cn.zengmingyang.needle.complier;
 public class Config {
     public static final String PACKAGE = "cn.zengmingyang.needle";
     public static final String APP_COMPONENT = "AppComponent";
-    public static final String ACTIVITY_COMPONENT = "Component";
+    public static final String ACTIVITY_COMPONENT = "ActivityComponent";
     public static final String APP_MODULE = "AppModule";
     public static final String ACTIVITY_MODULE = "ActivityModule";
     public static final String APP_DAGGER_REFERENCE = PACKAGE + ".Dagger" + APP_COMPONENT;

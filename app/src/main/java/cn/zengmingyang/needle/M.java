@@ -1,7 +1,5 @@
 package cn.zengmingyang.needle;
 
-import android.content.Context;
-
 import javax.inject.Inject;
 
 /**
@@ -10,9 +8,6 @@ import javax.inject.Inject;
 
 @ApplicationPool
 public class M {
-
-    @Inject
-    Context mContext;
 
     public int getI() {
         return i;
@@ -25,8 +20,8 @@ public class M {
     private int i = 0;
 
     @Inject
-    public M(Context context) {
-        System.out.println(context.getPackageName());
+    public M() {
+
     }
 
     public String getMessage() {

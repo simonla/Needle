@@ -17,6 +17,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DaggerActivityComponent.builder().appComponent(DaggerAppComponent.builder().build()).build();
         Needle.inject(this).into(ApplicationPool.getInstance(this.getPackageName()));
     }
 }

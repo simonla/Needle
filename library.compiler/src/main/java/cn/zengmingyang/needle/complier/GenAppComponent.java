@@ -1,8 +1,8 @@
 package cn.zengmingyang.needle.complier;
 
 import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.annotation.processing.RoundEnvironment;
@@ -11,9 +11,10 @@ import javax.lang.model.element.Modifier;
 
 import cn.zengmingyang.needle.ApplicationPool;
 import cn.zengmingyang.needle.complier.base.ProcessorStep;
+import cn.zengmingyang.needle.complier.find.ApplicationPoolFinder;
+import cn.zengmingyang.needle.complier.find.Finder;
 import dagger.Component;
 
-import static cn.zengmingyang.needle.complier.Config.ACTIVITY_COMPONENT;
 import static cn.zengmingyang.needle.complier.Config.APP_COMPONENT;
 import static cn.zengmingyang.needle.complier.Config.APP_MODULE;
 
@@ -35,14 +36,13 @@ public class GenAppComponent extends ProcessorStep {
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(ApplicationPool.class)
                 .addAnnotation(componentAnnotation);
-        Finder finder = new Finder();
-        for (Element element : finder.findActivities(roundEnvironment)) {
-            ClassName returnType = ClassName.get("cn.zengmingyang.needle", element.getSimpleName()
-                    + ACTIVITY_COMPONENT);
+        Finder finder = new ApplicationPoolFinder();
+
+        for (Element element : finder.find(roundEnvironment)) {
             MethodSpec subComponent = MethodSpec
-                    .methodBuilder(element.getSimpleName().toString().toLowerCase() + ACTIVITY_COMPONENT)
+                    .methodBuilder(element.getSimpleName().toString().toLowerCase())
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                    .returns(returnType)
+                    .returns(TypeName.get(element.asType()))
                     .build();
             interfaceBuilder.addMethod(subComponent);
         }

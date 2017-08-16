@@ -1,4 +1,4 @@
-package cn.zengmingyang.needle.complier;
+package cn.zengmingyang.needle.complier.find;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,19 +9,17 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.type.TypeMirror;
 
-import cn.zengmingyang.needle.complier.base.AptUtils;
-
 /**
- * Created by mingyang.zeng on 2017/8/14.
+ * Created by mingyang.zeng on 2017/8/15.
  */
 
-public class Finder {
+public class ActivitiesFinder extends Finder {
 
     private Set<Element> mActivityElements;
-    private AptUtils mUtils = AptUtils.get();
     private boolean isActivity = false;
 
-    public Set<? extends Element> findActivities(RoundEnvironment roundEnvironment) {
+    @Override
+    public Set<? extends Element> find(RoundEnvironment roundEnvironment) {
         if (mActivityElements != null) return mActivityElements;
         mActivityElements = new HashSet<>();
         for (Element e : roundEnvironment.getElementsAnnotatedWith(Inject.class)) {
@@ -45,7 +43,7 @@ public class Finder {
             isActivity = true;
             return;
         }
-        for (TypeMirror t : mUtils.getTypeUtils().directSupertypes(mirror)) {
+        for (TypeMirror t : mTypeUtils.directSupertypes(mirror)) {
             BFS(target, t);
         }
     }
